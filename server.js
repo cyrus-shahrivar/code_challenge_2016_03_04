@@ -1,3 +1,10 @@
+//TODO: use weather API http://openweathermap.org/current
+//
+//
+//
+//
+
+
 var express = require('express');
 var logger = require('morgan');
 var request = require('request');
