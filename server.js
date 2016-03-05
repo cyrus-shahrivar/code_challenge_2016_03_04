@@ -1,14 +1,15 @@
-//TODO: use weather API http://openweathermap.org/current
-//
-//
+//DONE: use weather API http://openweathermap.org/current
+//TODO: Now that data can be accessed by City for current weather data
+//TODO: CONT. FROM. ABOVE. next up is style and viz
 
 var express = require('express');
 var logger = require('morgan');
 var request = require('request');
 var app = express();
 
-
 app.use(logger('dev'));
+
+var api_key = process.env.WEATHER_SECRET;
 
 app.use(express.static('public'));
 
@@ -20,14 +21,14 @@ app.get('/', function (req, res) {
   // leaving blank
 });
 
-app.get('/kittens', function (req, res) {
-  request("http://api.giphy.com/v1/gifs/search?q=kittens&api_key=dc6zaTOxFJmzC&limit=20", function(error, response, body){
+app.get('/Nashville,TN', function (req, res) {
+  request("http://api.openweathermap.org/data/2.5/weather?q=Nashville,TN&appid=" + api_key, function(error, response, body){
     res.send(body);
   });
 });
 
-app.get('/searchGif/:searchParameter', function (req, res) {
-  request("http://api.giphy.com/v1/gifs/search?q=" + req.params.searchParameter + "&api_key=dc6zaTOxFJmzC&limit=1", function(error, response, body){
+app.get('/searchCity/:city', function (req, res) {
+  request("http://api.openweathermap.org/data/2.5/weather?q=" + req.params.city + "&appid=" + api_key, function(error, response, body){
     res.send(body);
   });
 });

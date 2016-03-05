@@ -1,26 +1,29 @@
 $(function(){
   $("#name-search-button").on('click', getSearchByNameGif);
-  $("#kittens").on('click', getKittens);
+  $("#city").on('click', getCity);
 });
 
 var getSearchByNameGif = function(){
   var searchTerm = $("#name-search-input").val();
-  $.get('/searchGif/' + searchTerm).done(renderGif);
+  console.log(searchTerm);
+  $.get('/searchCity/' + searchTerm).done(renderCity);
 };
 
-var getKittens = function() {
-  $.get('/kittens').done(renderGif);
+var getCity = function() {
+  $.get('/Nashville,TN').done(renderCity);
 };
 
-var renderGif = function(gifs) {
+var renderCity = function(gifs) {
+  var info = JSON.parse(gifs);
+  console.log(info);
+  // var gifList = JSON.parse(gifs).data;
+  // console.log(gifList);
 
-  var gifList = JSON.parse(gifs).data;
-
-  gifList.forEach(function(gif){
-    var gifURL = gif.images.original.url;
-
-    var ulTag = $('<ul>');
-    ulTag.html("<img src=" + gifURL + ">");
-    $('body').append(ulTag);
-  });
+  // gifList.forEach(function(gif){
+  //   var gifURL = gif.images.original.url;
+  //
+  //   var ulTag = $('<ul>');
+  //   ulTag.html("<img src=" + gifURL + ">");
+  //   $('body').append(ulTag);
+  // });
 };
