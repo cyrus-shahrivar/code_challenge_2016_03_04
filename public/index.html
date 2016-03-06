@@ -2,15 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Testing</title>
+    <title>Rain or Shine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
-    <h1>Rain or Shine</h1>
-    <input type="text" id="name-search-input" placeholder="Name" >
-    <button type="submit" name="city" id="city">Nashville,TN</button>
-    <button type="submit" id="name-search-button">Search By Name</button>
+    <div class="container">
+      <h1>Rain or Shine</h1>
+      <!-- it can do other regions, but determining units based on JSON feedback not implemented in current API subscription -->
+      <h2>Your U.S. Weather Search Tool</h2>
+    </div>
+    <div class="container">
+      <input type="text" id="name-search-input" class="form-control" placeholder="Name" >
+      <button type="submit" class="btn" id="name-search-button">Search By Name</button>
+    </div>
+    <div class="container">
+      <div id="weatherArea">
+      </div>
+    </div>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript" src="app.js"></script>
   </body>
 </html>

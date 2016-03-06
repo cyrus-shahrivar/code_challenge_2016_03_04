@@ -21,12 +21,6 @@ app.get('/', function (req, res) {
   // leaving blank
 });
 
-app.get('/Nashville,TN', function (req, res) {
-  request("http://api.openweathermap.org/data/2.5/weather?q=Nashville,TN&appid=" + api_key, function(error, response, body){
-    res.send(body);
-  });
-});
-
 app.get('/searchCity/:city', function (req, res) {
   request("http://api.openweathermap.org/data/2.5/weather?q=" + req.params.city + "&appid=" + api_key, function(error, response, body){
     res.send(body);
