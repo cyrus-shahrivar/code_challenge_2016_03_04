@@ -6,6 +6,7 @@ var express = require('express');
 var logger = require('morgan');
 var request = require('request');
 var app = express();
+var d3 = require('d3');
 
 app.use(logger('dev'));
 
@@ -21,8 +22,14 @@ app.get('/', function (req, res) {
   // leaving blank
 });
 
-app.get('/searchCity/:city', function (req, res) {
+app.get('/currentWeather/:city', function (req, res) {
   request("http://api.openweathermap.org/data/2.5/weather?q=" + req.params.city + "&appid=" + api_key, function(error, response, body){
+    res.send(body);
+  });
+});
+
+app.get('/5dayForecast/:city', function (req, res) {
+  request("http://api.openweathermap.org/data/2.5/forecast?q=" + req.params.city + "&appid=" + api_key, function(error, response, body){
     res.send(body);
   });
 });

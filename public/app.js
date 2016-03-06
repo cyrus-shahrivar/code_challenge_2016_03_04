@@ -1,43 +1,68 @@
 $(function(){
-  $("#name-search-button").on('click', getSearchByNameGif);
+  $("#name-search-button").on('click', getWeather);
 });
 
-var getSearchByNameGif = function(){
+var getWeather = function(){
+  getCurrentWeather();
+  get5dayForecast();
+};
+
+var getCurrentWeather = function(){
   var searchTerm = $("#name-search-input").val();
-  console.log(searchTerm);
-  $.get('/searchCity/' + searchTerm).done(renderCity);
+  $.get('/currentWeather/' + searchTerm).done(renderCurrentWeather);
+};
+
+var get5dayForecast = function(){
+  var searchTerm = $("#name-search-input").val();
+  $.get('/5dayForecast/' + searchTerm).done(renderForecast);
 };
 
 var kelvinToFahrenheit = function(kelvin){
   return kelvin * (9.0/5.0) - 459.67;
 };
 
-var renderCity = function(weather) {
+var renderCurrentWeather = function(weather) {
   var info = JSON.parse(weather);
-  console.log(info);
 
   // turns on weather div element and clears last data
-  $("#weatherArea").css("display", "block");
-  $("#weatherArea").html("");
+  $("#currentWeather").css("display", "block");
+  $("#currentWeatherSubTitle").css("display", "block");
+  $("#currentWeather").html("");
 
   //adds elements from weather JSON data
   var currentWeather = $("<h4>");
   currentWeather.addClass("weatherElement");
   currentWeather.html(info.weather[0].description.toUpperCase());
-  $("#weatherArea").append(currentWeather);
+  $("#currentWeather").append(currentWeather);
 
   var temp = $("<p>");
   temp.addClass("weatherElement");
   temp.html(Math.round(kelvinToFahrenheit(info.main.temp)) + "\&#8457;");
-  $("#weatherArea").append(temp);
+  $("#currentWeather").append(temp);
 
   var wind = $("<p>");
   wind.addClass("weatherElement");
   wind.html("Wind: " + info.wind.speed + " MPH");
-  $("#weatherArea").append(wind);
+  $("#currentWeather").append(wind);
 
   var humidity = $("<p>");
   humidity.addClass("weatherElement");
   humidity.html("Humidity: " + info.main.humidity + "%");
-  $("#weatherArea").append(humidity);
+  $("#currentWeather").append(humidity);
+};
+
+var renderForecast = function(weather) {
+  var info = JSON.parse(weather);
+  console.log(info);
+
+  $("#forecastWeatherSubTitle").css("display", "block");
+
+  var vizArea = d3.select("#forecastWeather")
+                  .selectAll("p")
+                  .data(info.list)
+                  .enter()
+                  .append("p")
+                  .text(function (d) {
+                    return d.weather[0].description;
+                  });
 };
