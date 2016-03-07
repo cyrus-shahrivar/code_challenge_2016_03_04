@@ -56,13 +56,67 @@ var renderForecast = function(weather) {
   console.log(info);
 
   $("#forecastWeatherSubTitle").css("display", "block");
+  $("#forecastWeather").html("");
 
-  var vizArea = d3.select("#forecastWeather")
-                  .selectAll("p")
-                  .data(info.list)
-                  .enter()
-                  .append("p")
-                  .text(function (d) {
-                    return d.weather[0].description;
-                  });
+  var width = window.innerWidth,
+  barHeight = 20;
+
+  var svg = d3.select("#forecastWeather").append("svg")
+      .attr("width", width)
+      .attr("height", barHeight * info.list.length + 100);
+
+  var x = d3.scale.linear()
+      .domain([0, 150])
+      .range([0, width]);
+
+  var bar = svg.selectAll("g")
+      .data(info.list)
+      .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(200," + i * barHeight + ")"; });
+
+  bar.append("rect")
+      .attr("width", function(d) { return x(Math.round(kelvinToFahrenheit(d.main.temp))) - 3; })
+      .attr("height", barHeight - 1);
+
+  bar.append("text")
+      .attr("x", function(d) { return x(Math.round(kelvinToFahrenheit(d.main.temp))) - 5; })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text(function(d) {
+        var returnString = "";
+        if (/clear/.test(d.weather[0].description)) {
+          returnString += "☀︎";
+        } else if (/rain/.test(d.weather[0].description)) {
+          returnString += "☂";
+        } else if (/clouds/.test(d.weather[0].description)) {
+          returnString += "☁︎";
+        } else {
+          returnString += d.weather[0].description;
+        }
+        return returnString + " " + Math.round(kelvinToFahrenheit(d.main.temp)) + "ºF";
+      });
+
+    var format = d3.time.format("%Y-%m-%d %X");
+    var tstart = format.parse(info.list[0].dt_txt),
+        tend = format.parse(info.list[38].dt_txt);
+
+    var y = d3.time.scale()
+        .domain([tstart, tend])
+        .range([0, barHeight * info.list.length]);
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(100," + 0 + ")")
+        .call(yAxis)
+      .selectAll("text")
+        .attr("y", 0)
+        .attr("x", 6)
+        .style("fill", "black")
+        .style("text-anchor", "start");
+
+
 };

@@ -34,3 +34,28 @@ h2, h3 {
 #currentWeatherSubTitle, #forecastWeatherSubTitle {
 	display: none;
 }
+
+#forecastWeather rect {
+  fill: steelblue;
+}
+
+#forecastWeather text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+  fill: black;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+svg {
+	display: block;
+	margin: 0 auto;
+}
