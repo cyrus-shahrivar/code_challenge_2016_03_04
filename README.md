@@ -7,7 +7,7 @@
 ## Tech Used
 - Node.js
 - D3.js
-- Heroku Deployement
+- Heroku Deployment
 
 ## Use Instructions
 1. Visit website via the link above.
