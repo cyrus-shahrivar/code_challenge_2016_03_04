@@ -1,22 +1,27 @@
 $(function(){
+  // button event listener
   $("#name-search-button").on('click', getWeather);
 });
 
+// runs weather request and rendering functions
 var getWeather = function(){
   getCurrentWeather();
   get5dayForecast();
 };
 
+// current weather request
 var getCurrentWeather = function(){
   var searchTerm = $("#name-search-input").val();
   $.get('/currentWeather/' + searchTerm).done(renderCurrentWeather);
 };
 
+// 5-day forecast weather request
 var get5dayForecast = function(){
   var searchTerm = $("#name-search-input").val();
   $.get('/5dayForecast/' + searchTerm).done(renderForecast);
 };
 
+// temp units conversion
 var kelvinToFahrenheit = function(kelvin){
   return kelvin * (9.0/5.0) - 459.67;
 };
@@ -55,29 +60,36 @@ var renderForecast = function(weather) {
   var info = JSON.parse(weather);
   console.log(info);
 
+  // turns on weather div element and clears last data
   $("#forecastWeatherSubTitle").css("display", "block");
   $("#forecastWeather").html("");
 
+  // d3 chart code below
   var width = window.innerWidth,
   barHeight = 20;
 
+  // creates SVG element
   var svg = d3.select("#forecastWeather").append("svg")
       .attr("width", width)
       .attr("height", barHeight * info.list.length + 100);
 
+  // creates chart scale
   var x = d3.scale.linear()
       .domain([0, 150])
       .range([0, width]);
 
+  // adds graphics group
   var bar = svg.selectAll("g")
       .data(info.list)
       .enter().append("g")
       .attr("transform", function(d, i) { return "translate(200," + i * barHeight + ")"; });
 
+  // rendering of each bar
   bar.append("rect")
       .attr("width", function(d) { return x(Math.round(kelvinToFahrenheit(d.main.temp))) - 3; })
       .attr("height", barHeight - 1);
 
+  // rendering of text
   bar.append("text")
       .attr("x", function(d) { return x(Math.round(kelvinToFahrenheit(d.main.temp))) - 5; })
       .attr("y", barHeight / 2)
@@ -96,18 +108,22 @@ var renderForecast = function(weather) {
         return returnString + " " + Math.round(kelvinToFahrenheit(d.main.temp)) + "ºF";
       });
 
+    // time formattting and getting for axis rendering
     var format = d3.time.format("%Y-%m-%d %X");
     var tstart = format.parse(info.list[0].dt_txt),
         tend = format.parse(info.list[38].dt_txt);
 
+    // time axis scaling
     var y = d3.time.scale()
         .domain([tstart, tend])
         .range([0, barHeight * info.list.length]);
 
+    // time axis generation
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
 
+    // time axis rendering
     svg.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(100," + 0 + ")")
