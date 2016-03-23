@@ -1,13 +1,14 @@
 $(function(){
-  // button event listener
-  $("#name-search-button").on('click', getWeather);
+  // button event listeners
+  $("#current-search-button").on('click', getCurrentWeather);
+  $("#fiveDay-search-button").on('click', get5dayForecast);
 });
 
-// runs weather request and rendering functions
-var getWeather = function(){
-  getCurrentWeather();
-  get5dayForecast();
-};
+// // runs weather request and rendering functions
+// var getWeather = function(){
+//   getCurrentWeather();
+//   get5dayForecast();
+// };
 
 // current weather request
 var getCurrentWeather = function(){
@@ -33,6 +34,10 @@ var renderCurrentWeather = function(weather) {
   $("#currentWeather").css("display", "block");
   $("#currentWeatherSubTitle").css("display", "block");
   $("#currentWeather").html("");
+
+  // adds title
+  var title = $("#currentWeatherSubTitle");
+  title.html("Current Weather: " + $("#name-search-input").val());
 
   //adds elements from weather JSON data
   var currentWeather = $("<h4>");
@@ -63,6 +68,10 @@ var renderForecast = function(weather) {
   // turns on weather div element and clears last data
   $("#forecastWeatherSubTitle").css("display", "block");
   $("#forecastWeather").html("");
+
+  // adds title
+  var title = $("#forecastWeatherSubTitle");
+  title.html("5-Day Forecast: " + $("#name-search-input").val());
 
   // d3 chart code below
   var width = window.innerWidth,
